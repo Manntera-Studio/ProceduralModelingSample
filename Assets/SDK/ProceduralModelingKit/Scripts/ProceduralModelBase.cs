@@ -3,38 +3,79 @@
 namespace OGL.ProceduralModelingKit
 {
     [ExecuteInEditMode]
-    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-
+    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(ProceduralModelBuilder))]
     public abstract class ProceduralModelBase : MonoBehaviour
     {
-        private MeshFilter MeshFilterComponent
-        {
-            get
-            {
-                if (meshFilterComponent == null)
-                {
-                    meshFilterComponent = GetComponent<MeshFilter>();
-                }
-
-                return meshFilterComponent;
-            }
-        }
+        public bool ExistsMaterial => material;
 
         private MeshRenderer MeshRendererComponent
         {
             get
             {
-                if (meshRendererComponent == null)
+                if (_meshRendererComponent == null)
                 {
-                    meshRendererComponent = GetComponent<MeshRenderer>();
+                    _meshRendererComponent = GetComponent<MeshRenderer>();
                 }
 
-                return meshRendererComponent;
+                return _meshRendererComponent;
             }
         }
 
-        [SerializeField] private MeshFilter meshFilterComponent;
-        [SerializeField] private MeshRenderer meshRendererComponent;
+        private MeshFilter MeshFilterComponent
+        {
+            get
+            {
+                if (_meshFilterComponent == null)
+                {
+                    _meshFilterComponent = GetComponent<MeshFilter>();
+                }
+
+                return _meshFilterComponent;
+            }
+        }
+
+        private MeshRenderer _meshRendererComponent;
+        private MeshFilter _meshFilterComponent;
+
+        [SerializeField] private Material material = null;
+
+        private void Start()
+        {
+            BuildRenderer();
+        }
+
+        private void OnDestroy()
+        {
+            DestroyMesh();
+        }
+
+        public void BuildRenderer()
+        {
+            if (!material)
+            {
+                Debug.LogError(name + "にマテリアルが設定されていません。");
+                return;
+            }
+
+            MeshRendererComponent.sharedMaterial = material;
+
+            DestroyMesh();
+            MeshFilterComponent.sharedMesh = CreateMesh();
+        }
+
+        private void DestroyMesh()
+        {
+            var mesh = MeshFilterComponent.sharedMesh;
+            if (!mesh) return;
+            if (Application.isPlaying)
+            {
+                Destroy(mesh);
+            }
+            else
+            {
+                DestroyImmediate(mesh);
+            }
+        }
 
         protected abstract Mesh CreateMesh();
     }
