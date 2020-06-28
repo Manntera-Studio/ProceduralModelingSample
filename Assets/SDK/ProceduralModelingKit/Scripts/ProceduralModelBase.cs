@@ -65,7 +65,7 @@ namespace OGL.ProceduralModelingKit
 
         private void DestroyMesh()
         {
-            var mesh = MeshFilterComponent.sharedMesh;
+            Mesh mesh = MeshFilterComponent.sharedMesh;
             if (!mesh) return;
             if (Application.isPlaying)
             {

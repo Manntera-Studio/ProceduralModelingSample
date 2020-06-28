@@ -9,32 +9,32 @@ namespace ProceduralModelSample._001_Quad
 
         protected override Mesh CreateMesh()
         {
-            var sideHalfLength = sideLength / 2;
+            float sideHalfLength = sideLength / 2;
 
-            var resultMesh = new Mesh();
+            Mesh resultMesh = new Mesh();
 
-            var posList = new Vector3[]
+            Vector3[] posList =
             {
                 new Vector3(-sideHalfLength, sideHalfLength, 0.0f),
                 new Vector3(sideHalfLength, sideHalfLength, 0.0f),
                 new Vector3(sideHalfLength, -sideHalfLength, 0.0f),
                 new Vector3(-sideHalfLength, -sideHalfLength, 0.0f),
             };
-            var uvList = new Vector2[]
+            Vector2[] uvList =
             {
                 new Vector2(0.0f, 1.0f),
                 new Vector2(1.0f, 1.0f),
                 new Vector2(1.0f, 0.0f),
                 new Vector2(0.0f, 0.0f),
             };
-            var normalList = new Vector3[]
+            Vector3[] normalList =
             {
                 new Vector3(0.0f, 0.0f, -1.0f),
                 new Vector3(0.0f, 0.0f, -1.0f),
                 new Vector3(0.0f, 0.0f, -1.0f),
                 new Vector3(0.0f, 0.0f, -1.0f),
             };
-            var indexList = new int[]
+            int[] indexList =
             {
                 0, 1, 2,
                 2, 3, 0,

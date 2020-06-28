@@ -12,24 +12,24 @@ namespace ProceduralModelSample._002_Quad
 
         protected override Mesh CreateMesh()
         {
-            var resultMesh = new Mesh();
+            Mesh resultMesh = new Mesh();
 
-            var posList = new List<Vector3>();
-            var uvList = new List<Vector2>();
-            var normalList = new List<Vector3>();
-            var indexList = new List<int>();
+            List<Vector3> posList = new List<Vector3>();
+            List<Vector2> uvList = new List<Vector2>();
+            List<Vector3> normalList = new List<Vector3>();
+            List<int> indexList = new List<int>();
 
-            for (var i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
-                for (var j = 0; j < segment + 1; j++)
+                for (int j = 0; j < segment + 1; j++)
                 {
-                    var xUv = (float) j / segment;
-                    var radian = xUv * Mathf.PI * 2f;
+                    float xUv = (float) j / segment;
+                    float radian = xUv * Mathf.PI * 2f;
 
-                    var cos = Mathf.Cos(radian);
-                    var sin = Mathf.Sin(radian);
-                    var xPos = cos * radius;
-                    var yPos = sin * radius;
+                    float cos = Mathf.Cos(radian);
+                    float sin = Mathf.Sin(radian);
+                    float xPos = cos * radius;
+                    float yPos = sin * radius;
                     posList.Add(new Vector3(xPos, height / 2f, yPos));
                     uvList.Add(new Vector2(xUv, 1f));
                     posList.Add(new Vector3(xPos, height / -2f, yPos));
@@ -38,7 +38,7 @@ namespace ProceduralModelSample._002_Quad
                     switch (i)
                     {
                         case 0:
-                            var normal = new Vector3(cos, 0f, sin);
+                            Vector3 normal = new Vector3(cos, 0f, sin);
                             normalList.Add(normal);
                             normalList.Add(normal);
                             break;
@@ -57,14 +57,14 @@ namespace ProceduralModelSample._002_Quad
             normalList.Add(new Vector3(0f, 1f, 0f));
             normalList.Add(new Vector3(0f, -1f, 0f));
 
-            var viewVertexCount = (segment + 1) * 2;
-            for (var i = 0; i < segment; i++)
+            int viewVertexCount = (segment + 1) * 2;
+            for (int i = 0; i < segment; i++)
             {
-                var index = i * 2;
-                var vi1 = index;
-                var vi2 = index + 1;
-                var vi3 = (index + 2) % viewVertexCount;
-                var vi4 = (index + 3) % viewVertexCount;
+                int index = i * 2;
+                int vi1 = index;
+                int vi2 = index + 1;
+                int vi3 = (index + 2) % viewVertexCount;
+                int vi4 = (index + 3) % viewVertexCount;
                 indexList.Add(vi1);
                 indexList.Add(vi3);
                 indexList.Add(vi2);
@@ -74,14 +74,14 @@ namespace ProceduralModelSample._002_Quad
                 indexList.Add(vi3);
             }
 
-            for (var i = 0; i < viewVertexCount; i += 2)
+            for (int i = 0; i < viewVertexCount; i += 2)
             {
                 indexList.Add(posList.Count - 2);
                 indexList.Add((i + 2) % viewVertexCount + viewVertexCount);
                 indexList.Add(i + viewVertexCount);
             }
 
-            for (var i = 1; i < viewVertexCount; i += 2)
+            for (int i = 1; i < viewVertexCount; i += 2)
             {
                 indexList.Add(posList.Count - 1);
                 indexList.Add(i + viewVertexCount);
