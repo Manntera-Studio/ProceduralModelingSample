@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OGL.ProceduralModelingKit;
 using UnityEngine;
 
@@ -6,6 +7,13 @@ namespace ProceduralModelSample._002_Quad
 {
     public class Sample : ProceduralModelBase
     {
+        enum MeshType
+        {
+            Side,
+            Cap,
+            Max,
+        }
+
         [SerializeField] private float radius = 1f;
         [SerializeField] private float height = 3f;
         [SerializeField] private int segment = 3;
@@ -19,11 +27,11 @@ namespace ProceduralModelSample._002_Quad
             List<Vector3> normalList = new List<Vector3>();
             List<int> indexList = new List<int>();
 
-            for (int i = 0; i < 2; i++)
+            for (int meshType = 0; meshType < (int) MeshType.Max; meshType++)
             {
-                for (int j = 0; j < segment + 1; j++)
+                for (int i = 0; i < segment + 1; i++)
                 {
-                    float xUv = (float) j / segment;
+                    float xUv = (float) i / segment;
                     float radian = xUv * Mathf.PI * 2f;
 
                     float cos = Mathf.Cos(radian);
@@ -35,17 +43,19 @@ namespace ProceduralModelSample._002_Quad
                     posList.Add(new Vector3(xPos, height / -2f, yPos));
                     uvList.Add(new Vector2(xUv, 0f));
 
-                    switch (i)
+                    switch ((MeshType) meshType)
                     {
-                        case 0:
+                        case MeshType.Side:
                             Vector3 normal = new Vector3(cos, 0f, sin);
                             normalList.Add(normal);
                             normalList.Add(normal);
                             break;
-                        case 1:
+                        case MeshType.Cap:
                             normalList.Add(new Vector3(0f, 1f, 0f));
                             normalList.Add(new Vector3(0f, -1f, 0f));
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
