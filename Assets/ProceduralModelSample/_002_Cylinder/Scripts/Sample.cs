@@ -18,7 +18,7 @@ namespace ProceduralModelSample._002_Quad
             var uvList = new List<Vector2>();
             var normalList = new List<Vector3>();
             var indexList = new List<int>();
-            
+
             for (var j = 0; j < 2; j++)
             {
                 for (var i = 0; i < segment + 1; i++)
@@ -52,19 +52,19 @@ namespace ProceduralModelSample._002_Quad
 
             posList.Add(new Vector3(0, height / 2f, 0));
             posList.Add(new Vector3(0, height / -2f, 0));
-            uvList.Add(new Vector2(0.5f, 1f));
+            uvList.Add(new Vector2(0.5f, 0f));
             uvList.Add(new Vector2(0.5f, 1f));
             normalList.Add(new Vector3(0f, 1f, 0f));
             normalList.Add(new Vector3(0f, -1f, 0f));
 
-            var len = (segment + 1) * 2;
+            var viewVertexCount = (segment + 1) * 2;
             for (var i = 0; i < segment; i++)
             {
                 var index = i * 2;
                 var vi1 = index;
                 var vi2 = index + 1;
-                var vi3 = (index + 2) % len;
-                var vi4 = (index + 3) % len;
+                var vi3 = (index + 2) % viewVertexCount;
+                var vi4 = (index + 3) % viewVertexCount;
                 indexList.Add(vi1);
                 indexList.Add(vi3);
                 indexList.Add(vi2);
@@ -72,6 +72,20 @@ namespace ProceduralModelSample._002_Quad
                 indexList.Add(vi4);
                 indexList.Add(vi2);
                 indexList.Add(vi3);
+            }
+
+            for (var i = 0; i < viewVertexCount; i += 2)
+            {
+                indexList.Add(posList.Count - 2);
+                indexList.Add((i + 2) % viewVertexCount + viewVertexCount);
+                indexList.Add(i + viewVertexCount);
+            }
+
+            for (var i = 1; i < viewVertexCount; i += 2)
+            {
+                indexList.Add(posList.Count - 1);
+                indexList.Add(i + viewVertexCount);
+                indexList.Add((i + 2) % viewVertexCount + viewVertexCount);
             }
 
             resultMesh.vertices = posList.ToArray();
