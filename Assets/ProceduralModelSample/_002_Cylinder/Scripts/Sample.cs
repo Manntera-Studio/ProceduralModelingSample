@@ -19,11 +19,11 @@ namespace ProceduralModelSample._002_Quad
             var normalList = new List<Vector3>();
             var indexList = new List<int>();
 
-            for (var j = 0; j < 2; j++)
+            for (var i = 0; i < 2; i++)
             {
-                for (var i = 0; i < segment + 1; i++)
+                for (var j = 0; j < segment + 1; j++)
                 {
-                    var xUv = (float) i / segment;
+                    var xUv = (float) j / segment;
                     var radian = xUv * Mathf.PI * 2f;
 
                     var cos = Mathf.Cos(radian);
@@ -35,7 +35,7 @@ namespace ProceduralModelSample._002_Quad
                     posList.Add(new Vector3(xPos, height / -2f, yPos));
                     uvList.Add(new Vector2(xUv, 0f));
 
-                    switch (j)
+                    switch (i)
                     {
                         case 0:
                             var normal = new Vector3(cos, 0f, sin);
